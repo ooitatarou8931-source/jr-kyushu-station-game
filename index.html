@@ -12,6 +12,7 @@ label{display:block;font-weight:700;color:var(--navy);margin:14px 0 6px}input,se
 input,select{width:100%;padding:12px;border:1px solid #aebdc7;border-radius:10px;background:white;color:#17212b}
 button{border:0;border-radius:10px;background:var(--blue);color:white;padding:12px 18px;font-weight:700;cursor:pointer;width:100%;margin-top:15px}button:hover{filter:brightness(1.08)}
 .secondary{background:#e6eef2;color:var(--navy);border:1px solid var(--line);margin-top:9px}
+.roulette-backdrop{position:fixed;inset:0;background:#102536bb;display:none;align-items:center;justify-content:center;padding:20px;z-index:30}.roulette-backdrop.show{display:flex}.roulette-card{width:min(340px,100%);background:white;border-radius:22px;padding:28px 22px;text-align:center;box-shadow:0 18px 60px #0005}.roulette-number{font-size:clamp(4rem,22vw,6rem);font-weight:900;line-height:1.15;color:var(--accent);font-variant-numeric:tabular-nums;padding:12px;border:3px solid #b7dadd;border-radius:18px;background:#f1fbfb;margin:16px 0}.roulette-number.spinning{animation:roulettePulse .12s ease-in-out infinite alternate}@keyframes roulettePulse{from{transform:scale(.97);filter:blur(.4px)}to{transform:scale(1.03);filter:blur(0)}}
 .result{margin-top:20px;padding:18px;border-radius:14px;background:var(--pale);border:1px solid #d4e1e6;min-height:120px}
 .station{font-size:clamp(1.7rem,6vw,2.5rem);font-weight:800;color:var(--accent);margin:3px 0}.muted{font-size:.9rem;color:#586873}
 .route{margin-top:14px;padding:12px;border-left:4px solid var(--accent);background:white;border-radius:7px;overflow-wrap:anywhere}
@@ -23,6 +24,27 @@ button{border:0;border-radius:10px;background:var(--blue);color:white;padding:12
 .choice small{display:block;color:#5c6b76;font-weight:400}.status{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.status span{background:white;border:1px solid var(--line);padding:5px 9px;border-radius:999px;font-size:.84rem}
 footer{font-size:.82rem;color:#65737d;margin:14px 4px}
 @media(min-width:560px){.inputs{display:grid;grid-template-columns:1fr 1fr;gap:14px}}
+
+/* るるぶ風・旅雑誌レイアウト */
+:root{--navy:#153d69;--blue:#0879b9;--pale:#fff8e8;--line:#e7d5a8;--accent:#e93452;--ink:#26384a}
+body{background:#fff4dc;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
+main{max-width:1040px;margin:0 auto;padding:12px}
+.card{background:#fff;border:3px solid #f1d47b;border-radius:22px;padding:clamp(14px,3vw,26px);box-shadow:0 6px 0 #e8c86b}
+h1{font-size:clamp(1.8rem,6vw,3.3rem);font-weight:900;color:#e92e50;letter-spacing:.02em;text-shadow:2px 2px 0 #ffe27a}
+.lead{font-weight:700;color:#174b7a;font-size:1.05rem}
+label{color:#174b7a;font-weight:900}
+input,select{border:2px solid #c9d9e5;border-radius:14px;padding:14px;background:#fffdf7}
+button{background:#e93452;border-radius:999px;box-shadow:0 4px 0 #b51f39;font-weight:900;padding:13px 18px}
+button:active{transform:translateY(3px);box-shadow:0 1px 0 #b51f39}
+.secondary{background:#0879b9;color:white;border:0}
+.result{border:2px dashed #efbd4e;background:#fff9e9;border-radius:18px;padding:16px}
+.notice{background:#eaf7ff;border-left:6px solid #0879b9;border-radius:12px;padding:14px}
+footer{background:#174b7a;color:white;border-radius:16px;padding:14px;margin:18px 0;font-size:.85rem}
+.modal{border:4px solid #f1d47b;border-radius:22px}
+.choice{background:#0879b9}
+.roulette-card{border:4px solid #f1d47b}
+@media(min-width:760px){main{padding:28px}.card{padding:30px}}
+
 </style>
 </head>
 <body>
@@ -37,7 +59,7 @@ footer{font-size:.82rem;color:#65737d;margin:14px 4px}
 <div id="result" class="result" aria-live="polite"><div class="muted">数字と最初の方向を選び、「ゲーム開始」を押してください。</div></div>
 <div class="notice"><b>遊び方：</b>博多駅を出発駅（0駅目）とし、次の駅を1駅目として数えます。分岐・接続駅では進行方向を選択します。終端駅では自動的に折り返します。選択履歴と通過駅を表示します。</div>
 </section><footer>提供されたJR九州路線図（2026年1月現在）を参照したゲーム用の簡易ネットワークです。路線図は概略図であり、全駅・全列車の停車パターンや運行上の接続を保証するものではありません。実際の乗車には公式の駅情報・時刻表をご確認ください。</footer></main>
-<div id="branchModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+<div id="rouletteModal" class="roulette-backdrop" role="status" aria-live="polite"><div class="roulette-card"><h2>駅数ルーレット</h2><div class="muted">今回進む駅数を抽選中…</div><div id="rouletteNumber" class="roulette-number spinning">?</div><div class="muted">まもなく出発します</div></div></div>\n<div id="branchModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
  <div class="modal"><h2 id="modalTitle">進む方向を選択</h2><div id="modalDesc" class="muted"></div><div id="choices" class="choices"></div></div>
 </div>
 <script>
@@ -129,7 +151,29 @@ function start(){
  move({to:selected.to,line:selected.line});
 }
 $("start").addEventListener("click",start);
-$("random").addEventListener("click",()=>{$("steps").value=String(Math.floor(Math.random()*100)+1);if(!$("first").value)$("first").value=firstChoices[0].label;start();});
+$("random").addEventListener("click",()=>{
+ const finalNumber=Math.floor(Math.random()*100)+1;
+ const modal=$("rouletteModal"),display=$("rouletteNumber");
+ if(!$("first").value)$("first").value=firstChoices[0].label;
+ $("start").disabled=true;$("random").disabled=true;
+ modal.classList.add("show");
+ let ticks=0;
+ const spin=setInterval(()=>{
+   display.textContent=String(Math.floor(Math.random()*100)+1);
+   ticks++;
+   if(ticks>=22){
+     clearInterval(spin);
+     display.classList.remove("spinning");
+     display.textContent=String(finalNumber);
+     $("steps").value=String(finalNumber);
+     setTimeout(()=>{
+       modal.classList.remove("show");
+       $("start").disabled=false;$("random").disabled=false;
+       start();
+     },900);
+   }
+ },85);
+});
 $("steps").addEventListener("keydown",e=>{if(e.key==="Enter")start();});
 })();
 </script>
