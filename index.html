@@ -123,7 +123,7 @@ function start(){
  if(!raw||!Number.isInteger(n)||n<1||n>100){$("result").innerHTML='<b>数字を確認してください</b><div class="muted">1〜100の整数を入力してください。</div>';return;}
  const initial=$("first").value;if(!initial){$("result").innerHTML='<b>最初に進む方向を選択してください。</b>';return;}
  target=n;stepsDone=0;current="博多";previous="博多";activeLine="";history=[];closeModal();
- const selected=firstChoices.find(x=>x.label===initial);
+ const selected=firstChoices.find(x=>x.line===initial);
  if(!selected){$("result").innerHTML='<b>初期ルートを確認できません。</b>';return;}
  // Route selection is the first movement; one station counted.
  move({to:selected.to,line:selected.line});
