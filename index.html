@@ -65,7 +65,8 @@ footer{background:#174b7a;color:white;border-radius:16px;padding:14px;margin:18p
  <button id="taskRandom" type="button">目的地ミッションルーレットを回す</button>
 </div>
 </section><footer>提供されたJR九州路線図（2026年1月現在）を参照したゲーム用の簡易ネットワークです。路線図は概略図であり、全駅・全列車の停車パターンや運行上の接続を保証するものではありません。実際の乗車には公式の駅情報・時刻表をご確認ください。</footer></main>
-<div id="rouletteModal" class="roulette-backdrop" role="status" aria-live="polite"><div class="roulette-card"><h2>駅数ルーレット</h2><div class="muted">今回進む駅数を抽選中…</div><div id="rouletteNumber" class="roulette-number spinning">?</div><div class="muted">まもなく出発します</div></div></div>\n<div id="taskRouletteModal" class="roulette-backdrop" role="status" aria-live="polite"><div class="roulette-card"><h2>目的地でやること</h2><div class="muted">ミッションを抽選中…</div><div id="taskRouletteText" class="roulette-number spinning" style="font-size:clamp(1.5rem,7vw,2.4rem);min-height:110px;display:flex;align-items:center;justify-content:center">？</div><div class="muted">今回の旅のミッションは…</div></div></div>
+<div id="rouletteModal" class="roulette-backdrop" role="status" aria-live="polite"><div class="roulette-card"><h2>駅数ルーレット</h2><div class="muted">今回進む駅数を抽選中…</div><div id="rouletteNumber" class="roulette-number spinning">?</div><div class="muted">まもなく出発します</div></div></div>
+<div id="taskRouletteModal" class="roulette-backdrop" role="status" aria-live="polite"><div class="roulette-card"><h2>目的地でやること</h2><div class="muted">ミッションを抽選中…</div><div id="taskRouletteText" class="roulette-number spinning" style="font-size:clamp(1.5rem,7vw,2.4rem);min-height:110px;display:flex;align-items:center;justify-content:center">？</div><div class="muted">今回の旅のミッションは…</div></div></div>
 <div id="branchModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
  <div class="modal"><h2 id="modalTitle">進む方向を選択</h2><div id="modalDesc" class="muted"></div><div id="choices" class="choices"></div></div>
 </div>
@@ -161,7 +162,7 @@ $("start").addEventListener("click",start);
 $("random").addEventListener("click",()=>{
  const finalNumber=Math.floor(Math.random()*100)+1;
  const modal=$("rouletteModal"),display=$("rouletteNumber");
- if(!$("first").value)$("first").value=firstChoices[0].label;
+ if(!$("first").value)$("first").value=firstChoices[0].line;
  $("start").disabled=true;$("random").disabled=true;
  modal.classList.add("show");
  let ticks=0;
